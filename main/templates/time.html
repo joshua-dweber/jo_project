@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Time</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/time.js' %}"></script>
+</head>
+<body>
+    {% csrf_token %}
+    {% if not current_user.upgrades.all %}
+    <button id='begin'>Begin</button>
+    {% endif %}
+    <h1 id="count"></h1>
+    <button id="plus1" style="display: none">+1</button>
+    <button id="plus3" style="display: none">+3</button>
+    <button id="plus5" style="display: none">+5</button>
+    <button id="plus15" style="display: none">+15</button>
+    <button id="plus25" style="display: none">+25</button>
+    
+</body>
+</html>
