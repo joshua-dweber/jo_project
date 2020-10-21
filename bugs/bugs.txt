@@ -1,0 +1,1 @@
+bug 1 : able to refresh to bypass the 5 second timeout period to gain currency

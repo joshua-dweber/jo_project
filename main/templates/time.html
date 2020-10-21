@@ -11,15 +11,21 @@
 </head>
 <body>
     {% csrf_token %}
-    {% if not current_user.upgrades.all %}
+    {% if current_user.jocoin == 0 %}
     <button id='begin'>Begin</button>
     {% endif %}
     <h1 id="count"></h1>
-    <button id="plus1" style="display: none">+1</button>
-    <button id="plus3" style="display: none">+3</button>
-    <button id="plus5" style="display: none">+5</button>
-    <button id="plus15" style="display: none">+15</button>
-    <button id="plus25" style="display: none">+25</button>
-    
+    <div class="building" style="display: none"><button class="building_button" id="buy_bld0" building_id="0" is_bought=0>Get Free Money (become a HOBO)</button></div>
+    <div class="building" style="display: none"><button class="building_button" id="buy_bld1" building_id="1" is_bought=0>Teacher Job</button></div>
+    <div class="building" style="display: none"><button class="building_button" id="buy_bld2" building_id="2" is_bought=0>Pass the CPA exam!</button></div>
+    <div class="building" style="display: none"><button class="building_button" id="buy_bld3" building_id="3" is_bought=0>Close a few cases</button></div>
+    <div class="building" style="display: none"><button class="building_button" id="buy_bld4" building_id="4" is_bought=0>Geraldo asked you to whack someone...</button></div>
+    <div class="building" style="display: none"><button class="building_button" id="buy_bld5" building_id="5" is_bought=0>C O R R U P T I O N</button></div>
+    <form action="/change_money" method="post">
+        {% csrf_token %}
+        <input type="number" name="money">
+        <input type="submit" value="Change">
+    </form>
+    <div id="buildings"></div>
 </body>
 </html>
