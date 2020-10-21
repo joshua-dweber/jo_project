@@ -33,3 +33,23 @@ class Time_Upgrade(models.Model):
     building = models.ForeignKey(Time_Building, related_name="time_upgrades", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Click_Building(models.Model):
+    building_id = models.IntegerField()
+    name = models.CharField(max_length=255)
+    enabled = models.BooleanField()
+    num = models.DecimalField(max_digits=100, decimal_places=3)
+    user = models.ForeignKey(User, related_name="click_buildings", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Click_Upgrade(models.Model):
+    upgrade_id = models.IntegerField()
+    name = models.CharField(max_length=255)
+    enabled = models.BooleanField()
+    num = models.DecimalField(max_digits=100, decimal_places=3)
+    building = models.ForeignKey(Click_Building, related_name="click_upgrades", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

@@ -12,4 +12,8 @@ urlpatterns = [
     path('time_update_upgrade', views.time_update_upgrade),
     path('change_money', views.change_money),
     path('begin', views.begin),
+    path('click_update_currency', views.click_update_currency),
+    path('click_update_building', views.click_update_building),
+    path('click_update_upgrade', views.click_update_upgrade),
+    path('page_reload_click', views.page_reload_click),
 ]
