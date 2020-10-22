@@ -17,21 +17,21 @@
 </head>
 
 <body>
+	<a href='/'>Go Back</a>
 	{% csrf_token %}
 	<button id='clicker'>Click Me</button>
 	<h1 id="count"></h1>
-	<div class="building" style="display: none"><button class="building_button" id="buy_bld0" building_id="0"
-			is_bought=0>Increase Money Per Click</button></div>
-	<div class="building" style="display: none"><button class="building_button" id="buy_bld1" building_id="1"
-			is_bought=0>Gamble for Money</button></div>
-	<div class="building" style="display: none"><button class="building_button" id="buy_bld2" building_id="2"
-			is_bought=0>Red vs Green</button></div>
-	<div class="building" style="display: none"><button class="building_button" id="buy_bld3" building_id="3"
-			is_bought=0>Every 3rd, gain 1</button></div>
-	<div class="building" style="display: none"><button class="building_button" id="buy_bld4" building_id="4"
-			is_bought=0>A piece of the pie</button></div>
-	<div class="building" style="display: none"><button class="building_button" id="buy_bld5" building_id="5"
-			is_bought=0>Aim Trainer</button></div>
+	<div class="building" style="display: none"><button class="building_button" id="buy_bld0" building_id="0" is_bought=0>Increase Money Per Click I</button></div>
+	<div class="building" style="display: none"><button class="building_button" id="buy_bld1" building_id="1" is_bought=0>Increase Money Per Click II</button></div>
+	<div class="building" style="display: none"><button class="building_button" id="buy_bld2" building_id="2" is_bought=0>Increase Money Per Click III</button></div>
+	<div class="building" style="display: none"><button class="building_button" id="buy_bld3" building_id="3" is_bought=0>Increase Money Per Click IV</button></div>
+	<div class="building" style="display: none"><button class="building_button" id="buy_bld4" building_id="4" is_bought=0>Increase Money Per Click V</button></div>
+	<div class="building" style="display: none"><button class="building_button" id="buy_bld5" building_id="5" is_bought=0>Increase Money Per Click VI</button></div>
+	<form action="/change_money_click" method="post">
+		{% csrf_token %}
+		<input type="number" name="money">
+		<input type="submit" value="Change">
+	</form>
 	<div id="buildings"></div>
 </body>
 

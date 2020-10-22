@@ -1,13 +1,13 @@
 $(document).ready(function() {
+    var jocoin = 0;
+    var increaseRate = 0;
+
     updateSyncCurrency();
     updateCurrency();
     reloadPage();
 
-    var jocoin = 0;
-    var increaseRate = 0;
-
     function updateSyncCurrency() {
-        syncCurrency();
+        syncCurrency(empty);
         setTimeout(updateSyncCurrency, 30000);
     }
 
@@ -25,6 +25,8 @@ $(document).ready(function() {
         return "";
     }
 
+    function empty() { return undefined; }; 
+
     function reloadPage() {
         $.post("/page_reload_time", { csrfmiddlewaretoken: getCookie("csrftoken") }, function (data, status) {
             console.log(data);
@@ -33,29 +35,22 @@ $(document).ready(function() {
                 for (var i = 0; i < data.buildings.length; i++) {
                     $("#buildings").append(`<div id="bld${data.buildings[i].building_id}" building_id="${data.buildings[i].building_id}">
                         <h1>${data.buildings[i].name}</h1>
-                        <button class="upgrade" id="buy_upgrade0" upgrade_id="0" is_bought=0>0.2</button>
-                        <button class="upgrade" id="buy_upgrade1" upgrade_id="1" is_bought=0>0.3</button>
-                        <button class="upgrade" id="buy_upgrade2" upgrade_id="2" is_bought=0>0.4</button>
-                        <button class="upgrade" id="buy_upgrade3" upgrade_id="3" is_bought=0>0.5</button>
-                        <button class="upgrade" id="buy_upgrade4" upgrade_id="4" is_bought=0>0.6</button>
-                    </div>`);
-                    for (var j = 0; j < data.buildings[i].upgrade_ids.length; j++) {
-                        $(`#buy_upgrade${data.buildings[i].upgrade_ids[j]}`).attr("is_bought", 1);
-                        $(`#buy_upgrade${data.buildings[i].upgrade_ids[j]}`).hide();
+                        <p>${data.time_buildings[data.buildings[i].building_id].desc}</p>
+                        </div>`);
+                    for (var j = 0; j < 5; j++) {
+                        $(`#bld${data.buildings[i].building_id}`).append(`<button class="upgrade" id="buy_upgrade${j}${data.buildings[i].building_id}" upgrade_id="${j}" is_bought=0>${data.time_upgrades[j].desc}. It costs ${data.time_upgrades[j].cost * data.time_buildings[data.buildings[i].building_id].cost}</button><br>`);
                     }
-                    $(`#buy_bld${i}`).attr("is_bought", 1);
+                    for (var j = 0; j < data.buildings[i].upgrade_ids.length; j++) {
+                        $(`#buy_upgrade${data.buildings[i].upgrade_ids[j]}${data.buildings[i].building_id}`).attr("is_bought", 1);
+                        $(`#buy_upgrade${data.buildings[i].upgrade_ids[j]}${data.buildings[i].building_id}`).hide();
+                    }
+                    $(`#buy_bld${data.buildings[i].building_id}`).attr("is_bought", 1);
                 }
             }
             jocoin = parseFloat(data.jocoin);
             $(".upgrade").click(function () {
-                $.post("/time_update_upgrade", { csrfmiddlewaretoken: getCookie("csrftoken"), "building_id": $(this).parent().attr("building_id"), "upgrade_id": $(this).attr("upgrade_id") },
-                    function (data, status) {
-                        if (data.status == 1) {
-                            $(this).hide();
-                            reloadPage();
-                            syncCurrency();
-                        }
-                    });
+                upgrade = $(this);
+                syncCurrency(postUpdateUpgrade, upgrade);
             });
         });
     }
@@ -88,22 +83,46 @@ $(document).ready(function() {
         } else {
             $("#buy_bld4").parent().hide();
         }
-        if (jocoin >= 10000000 && ($("#buy_bld5").attr("is_bought") == 0)) {
-            $("#buy_bld5").parent().show();
-        } else {
-            $("#buy_bld5").parent().hide();
-        }
         setTimeout(updateCurrency, 100);
     };
-
-    function syncCurrency() {
+    
+    function syncCurrency(callback, ...args) {
         $.post("/time_update_currency", { csrfmiddlewaretoken: getCookie("csrftoken") }, function (data, status) {
-            $('#count').html(data.jocoin);
             jocoin = parseFloat(data.jocoin);
             increaseRate = parseFloat(data.increase_rate);
-            console.log("synced")
+            $('#count').html(jocoin.toFixed(1));
+            $("title").html(`Time (${parseInt(jocoin.toFixed(1))})`);
+            console.log("synced");
+            callback(args);
         });
     };
+    
+    function postUpdateUpgrade(args) {
+        $.post("/time_update_upgrade", { csrfmiddlewaretoken: getCookie("csrftoken"), "building_id": args[0].parent().attr("building_id"), "upgrade_id": args[0].attr("upgrade_id") },
+            function (data, status) {
+                if (data.status == 1) {
+                    args[0].hide();
+                    syncCurrency(empty);
+                    reloadPage();
+                } else {
+                    console.log(data.error);
+                }
+            });
+    }
+
+    function postUpdateBuilding(args) {
+        $.post("/time_update_building", { csrfmiddlewaretoken: getCookie("csrftoken"), "building_id": args[0].attr("building_id") },
+            function (data, status) {
+                if (data.status == 1) {
+                    args[0].parent().hide();
+                    syncCurrency(empty);
+                    reloadPage();
+                } else {
+                    console.log(data.error);
+                }
+            });
+        
+    }
 
     $("#begin").click(function () {
         $.post("/begin", { csrfmiddlewaretoken: getCookie("csrftoken") }, function (data, status) {
@@ -112,15 +131,9 @@ $(document).ready(function() {
         $(this).hide();
         jocoin += 1
     });
-
+    
     $(".building_button").click(function () {
-        $.post("/time_update_building", { csrfmiddlewaretoken: getCookie("csrftoken"), "building_id": $(this).attr("building_id") },
-        function (data, status) {
-            if (data.status == 1) {
-                $(this).parent().hide();
-                reloadPage();
-                syncCurrency();
-            }
-        });
+        building = $(this);
+        syncCurrency(postUpdateBuilding, building);
     });
 });

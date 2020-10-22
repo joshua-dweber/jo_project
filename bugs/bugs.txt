@@ -1,1 +1,6 @@
-bug 1 : able to refresh to bypass the 5 second timeout period to gain currency
+bug 1 : upgrades appear for time's buildings without meeting the 'minimum'
+requisite
+bug 2: the last buy_bld button will not disappear when clicked (only found when money is added in via form)
+bug 3: button upgrades for all buildings except Pan Handler will not disappear on click (not sure if they work or not)
+also, no way to go back to homepage via /time or /click
+bug 4: upgrades for Teach Hustler do not work

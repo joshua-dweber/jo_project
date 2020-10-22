@@ -7,11 +7,12 @@ $(document).ready(function() {
         clicks++;
         updateCurrency();
     });
+
     updateSyncCurrency();
     reloadPage();
 
     function updateSyncCurrency() {
-        syncCurrency();
+        syncCurrency(empty);
         setTimeout(updateSyncCurrency, 10000);
     }
 
@@ -29,6 +30,8 @@ $(document).ready(function() {
         return "";
     }
 
+    function empty() { return undefined; }; 
+
     function reloadPage() {
         $.post("/page_reload_click", { csrfmiddlewaretoken: getCookie("csrftoken") }, function (data, status) {
             console.log(data);
@@ -37,30 +40,22 @@ $(document).ready(function() {
                 for (var i = 0; i < data.buildings.length; i++) {
                     $("#buildings").append(`<div id="bld${data.buildings[i].building_id}" building_id="${data.buildings[i].building_id}">
                         <h1>${data.buildings[i].name}</h1>
-                        <button class="upgrade" id="buy_upgrade0" upgrade_id="0" is_bought=0>+0.2 per click(costs 10, unlocked at $120)</button>
-                        <button class="upgrade" id="buy_upgrade1" upgrade_id="1" is_bought=0>+0.3 per click(costs 12, unlocked at $160)</button>
-                        <button class="upgrade" id="buy_upgrade2" upgrade_id="2" is_bought=0>+0.4 per click(costs 15, unlocked at $220)</button>
-                        <button class="upgrade" id="buy_upgrade3" upgrade_id="3" is_bought=0>+0.5 per click(costs 25, unlocked at $300)</button>
-                        <button class="upgrade" id="buy_upgrade4" upgrade_id="4" is_bought=0>+0.6 per click(costs 50, unlocked at $500)</button>
+                        <p>${data.click_buildings[data.buildings[i].building_id].desc}</p>
                     </div>`);
-                    for (var j = 0; j < data.buildings[i].upgrade_ids.length; j++) {
-                        $(`#buy_upgrade${data.buildings[i].upgrade_ids[j]}`).attr("is_bought", 1);
-                        $(`#buy_upgrade${data.buildings[i].upgrade_ids[j]}`).hide();
+                    for (var j = 0; j < 5; j++) {
+                        $(`#bld${data.buildings[i].building_id}`).append(`<button class="upgrade" id="buy_upgrade${j}${data.buildings[i].building_id}" upgrade_id="${j}" is_bought=0>${data.click_upgrades[j].desc}. It costs ${data.click_upgrades[j].cost * data.click_buildings[data.buildings[i].building_id].cost}</button><br>`);
                     }
-                    $(`#buy_bld${i}`).attr("is_bought", 1);
+                    for (var j = 0; j < data.buildings[i].upgrade_ids.length; j++) {
+                        $(`#buy_upgrade${data.buildings[i].upgrade_ids[j]}${data.buildings[i].building_id}`).attr("is_bought", 1);
+                        $(`#buy_upgrade${data.buildings[i].upgrade_ids[j]}${data.buildings[i].building_id}`).hide();
+                    }
+                    $(`#buy_bld${data.buildings[i].building_id}`).attr("is_bought", 1);
                 }
             }
             usd = parseFloat(data.usd);
             $(".upgrade").click(function () {
                 upgrade = $(this)
-                $.post("/click_update_upgrade", { csrfmiddlewaretoken: getCookie("csrftoken"), "building_id": $(this).parent().attr("building_id"), "upgrade_id": $(this).attr("upgrade_id") },
-                    function (data, status) {
-                        if (data.status == 1) {
-                            upgrade.hide();
-                            reloadPage();
-                            syncCurrency();
-                        }
-                    });
+                syncCurrency(postUpdateUpgrade, upgrade);
             });
         });
     }
@@ -93,34 +88,52 @@ $(document).ready(function() {
         } else {
             $("#buy_bld4").parent().hide();
         }
-        if (usd >= 100000000 && ($("#buy_bld5").attr("is_bought") == 0)) {
-            $("#buy_bld5").parent().show();
-        } else {
-            $("#buy_bld5").parent().hide();
-        }
     };
 
-    function syncCurrency() {
+    function syncCurrency(callback, ...args) {
         $.post("/click_update_currency", { csrfmiddlewaretoken: getCookie("csrftoken"), "clicks": clicks }, function (data, status) {
             usd = parseFloat(data.usd);
             increaseRate = parseFloat(data.increase_rate);
+            if (data.status == 0) {
+                $("body").html(data.error);
+                return callback(args);
+            }
+            $('#count').html(usd.toFixed(1));
+            $("title").html(`Click (${parseInt(usd.toFixed(1))})`);
             console.log("synced");
-            $('#count').html(usd);
+            clicks = 0;
+            callback(args);
         });
-        clicks = 0;
     };
 
+    function postUpdateUpgrade(args) {
+        $.post("/click_update_upgrade", { csrfmiddlewaretoken: getCookie("csrftoken"), "building_id": args[0].parent().attr("building_id"), "upgrade_id": args[0].attr("upgrade_id") },
+            function (data, status) {
+                if (data.status == 1) {
+                    args[0].hide();
+                    syncCurrency(empty);
+                    reloadPage();
+                } else {
+                    console.log(data.error);
+                }
+            });
+    }
+
+    function postUpdateBuilding(args) {
+        $.post("/click_update_building", { csrfmiddlewaretoken: getCookie("csrftoken"), "building_id": args[0].attr("building_id") },
+            function (data, status) {
+                if (data.status == 1) {
+                    args[0].parent().hide();
+                    syncCurrency(empty);
+                    reloadPage();
+                } else {
+                    console.log(data.error);
+                }
+            });
+    }
+
     $(".building_button").click(function () {
-        syncCurrency();
         building = $(this);
-        $.post("/click_update_building", { csrfmiddlewaretoken: getCookie("csrftoken"), "building_id": $(this).attr("building_id") },
-        function (data, status) {
-            console.log(data.status);
-            if (data.status == 1) {
-                building.parent().hide();
-                reloadPage();
-                syncCurrency();
-            }
-        });
+        syncCurrency(postUpdateBuilding, building);
     });
 });

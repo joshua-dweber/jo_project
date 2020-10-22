@@ -3,10 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Document</title>
+    <script>
+        $(document).ready(function () {
+            // https://stackoverflow.com/questions/22063612/adding-csrftoken-to-ajax-request
+            function getCookie(c_name) {
+                if (document.cookie.length > 0) {
+                    c_start = document.cookie.indexOf(c_name + "=");
+                    if (c_start != -1) {
+                        c_start = c_start + c_name.length + 1;
+                        c_end = document.cookie.indexOf(";", c_start);
+                        if (c_end == -1) c_end = document.cookie.length;
+                        return unescape(document.cookie.substring(c_start, c_end));
+                    }
+                }
+                return "";
+            }
+
+            $("#good_upgrade").click(function () {
+                gu = $(this);
+                $.post("/is_rich_enough", { csrfmiddlewaretoken: getCookie("csrftoken") },
+                    function (data, status) {
+                        console.log(status);
+                        gu.hide();
+                    });
+            });
+        });
+    </script>
 </head>
 <body>
     <a href="/time">Time</a>
     <a href="/click">Click</a>
+
+    {% if is_rich_enough == True %}
+    <button id="good_upgrade">Upgrade all money making methods by 10% (costs 100,000,000 of each)</button>
+    {% endif %}
 </body>
 </html>
