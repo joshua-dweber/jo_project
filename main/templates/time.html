@@ -6,27 +6,38 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Time</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/time.css' %}">
     <script src="{% static 'js/time.js' %}"></script>
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/JoCoin_img.png' %}" />
 </head>
 <body>
     {% csrf_token %}
-    {% if current_user.jocoin == 0 %}
-    <button id='begin'>Begin</button>
-    {% endif %}
-    <a href='/'>Go Back</a>
-    <h1 id="count"></h1>
-    <div class="building" style="display: none"><button class="building_button" id="buy_bld0" building_id="0" is_bought=0>Get Free Money (become a HOBO)</button></div>
-    <div class="building" style="display: none"><button class="building_button" id="buy_bld1" building_id="1" is_bought=0>Teacher Job (costs 1000 JoCoin)</button></div>
-    <div class="building" style="display: none"><button class="building_button" id="buy_bld2" building_id="2" is_bought=0>Pass the CPA exam! (costs 10000 JoCoin)</button></div>
-    <div class="building" style="display: none"><button class="building_button" id="buy_bld3" building_id="3" is_bought=0>Close a few cases (costs 100,000 JoCoin)</button></div>
-    <div class="building" style="display: none"><button class="building_button" id="buy_bld4" building_id="4" is_bought=0>Mafia Boss(costs 1,000,000 JoCoin)</button></div>
-    <div class="building" style="display: none"><button class="building_button" id="buy_bld5" building_id="5" is_bought=0>Owner of Government(costs 100,000,000 JoCoin)</button></div>
-    <form action="/change_money_time" method="post">
-        {% csrf_token %}
-        <input type="number" name="money">
-        <input type="submit" value="Change">
-    </form>
-    <div id="buildings"></div>
+    <div id="container">
+        <a href='/' id="back">Go Back</a>
+        {% if current_user.jocoin == 0 %}
+        <button id='begin'>Begin</button>
+        {% endif %}
+        <div id="counter">
+            <img src="{% static 'images/JoCoin_img.png' %}" alt='JoCoin' id='jocoin' draggable="false">
+            <span id="count"></span>
+        </div>
+        <div id="buildings">
+            <div id="available_buildings">
+                <span>Available Buildings:</span>
+                <div class="building"><button class="building_button" id="buy_bld0" building_id="0" is_bought=0>Get Free Money (become a HOBO)</button></div>
+                <div class="building"><button class="building_button" id="buy_bld1" building_id="1" is_bought=0>Teacher Job (costs 1000 JoCoin)</button></div>
+                <div class="building"><button class="building_button" id="buy_bld2" building_id="2" is_bought=0>Pass the CPA exam! (costs 10000 JoCoin)</button></div>
+                <div class="building"><button class="building_button" id="buy_bld3" building_id="3" is_bought=0>Close a few cases (costs 100,000 JoCoin)</button></div>
+                <div class="building"><button class="building_button" id="buy_bld4" building_id="4" is_bought=0>Mafia Boss(costs 1,000,000 JoCoin)</button></div>
+                <div class="building"><button class="building_button" id="buy_bld5" building_id="5" is_bought=0>Owner of Government (costs 100,000,000 JoCoin)</button></div>
+            </div>
+            <div id="bought_buildings"></div>
+        </div>
+        <form action="/change_money_time" method="post" id="change">
+            {% csrf_token %}
+            <input type="number" name="money">
+            <input type="submit" value="Change Money" id="money-submit">
+        </form>
+    </div>
 </body>
 </html>

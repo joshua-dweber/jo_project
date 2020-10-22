@@ -1,0 +1,72 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    background-image: linear-gradient(to right, darkgreen,black,orange);
+    
+}
+
+#container{
+    height: 100%;
+    width: 100%;
+    display:flex;
+    justify-content: space-evenly;
+}
+
+#button1 {
+    color: white;
+    padding: 25px;
+    height: 100%;
+    width: 50%;
+    background-color: darkgreen;
+    background-image: linear-gradient(to right,darkgreen, black);
+    text-decoration: none;
+    display:flex;
+    justify-content: space-between;
+}
+#button2 {
+    color:white;
+    padding: 25px;
+    height: 100%;
+    width: 50%;
+    background-color: orange;
+    background-image: linear-gradient(to left, orange, black);
+    text-decoration: none;
+    display:flex;
+    justify-content: space-between;
+}
+
+#good_upgrade{
+    width: 500px;
+    height: 25px;
+}
+
+#dollar-sign {
+    margin-top: 27px;
+    height: 340px;
+    margin-left:-190px;
+    
+}
+#jocoin{
+    height:300px;
+    margin-top:50px;
+    margin-right:70px;
+    
+}
+.btext{
+    text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 55px;
+    font-weight: bold;
+    display:flex;
+    align-self: center;
+}
+#button2 .btext {
+    margin-left:-500px;
+}
+
+
+

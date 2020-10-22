@@ -31,14 +31,15 @@ $(document).ready(function() {
         $.post("/page_reload_time", { csrfmiddlewaretoken: getCookie("csrftoken") }, function (data, status) {
             console.log(data);
             if (data.buildings) {
-                $("#buildings").html("");
+                $("#bought_buildings").html("");
+                $("#bought_buildings").append("<span>Owned Buildings</span>");
                 for (var i = 0; i < data.buildings.length; i++) {
-                    $("#buildings").append(`<div id="bld${data.buildings[i].building_id}" building_id="${data.buildings[i].building_id}">
+                    $("#bought_buildings").append(`<div id="bld${data.buildings[i].building_id}" class="blding" building_id="${data.buildings[i].building_id}">
                         <h1>${data.buildings[i].name}</h1>
                         <p>${data.time_buildings[data.buildings[i].building_id].desc}</p>
                         </div>`);
                     for (var j = 0; j < 5; j++) {
-                        $(`#bld${data.buildings[i].building_id}`).append(`<button class="upgrade" id="buy_upgrade${j}${data.buildings[i].building_id}" upgrade_id="${j}" is_bought=0>${data.time_upgrades[j].desc}. It costs ${data.time_upgrades[j].cost * data.time_buildings[data.buildings[i].building_id].cost}</button><br>`);
+                        $(`#bld${data.buildings[i].building_id}`).append(`<button class="upgrade" id="buy_upgrade${j}${data.buildings[i].building_id}" upgrade_id="${j}" is_bought=0>${data.time_upgrades[j].desc}. (costs ${data.time_upgrades[j].cost * data.time_buildings[data.buildings[i].building_id].cost})</button>`);
                     }
                     for (var j = 0; j < data.buildings[i].upgrade_ids.length; j++) {
                         $(`#buy_upgrade${data.buildings[i].upgrade_ids[j]}${data.buildings[i].building_id}`).attr("is_bought", 1);
@@ -57,31 +58,36 @@ $(document).ready(function() {
     
     function updateCurrency() {
         jocoin += increaseRate;
-        $('#count').html(jocoin.toFixed(1));
+        $('#count').html(`Coin: ${jocoin.toFixed(1)}`);
         if (jocoin >= 1 && ($("#buy_bld0").attr("is_bought") == 0)) {
-            $("#buy_bld0").parent().show();
+            $("#buy_bld0").parent().addClass("available");
         } else {
-            $("#buy_bld0").parent().hide();
+            $("#buy_bld0").parent().removeClass("available");
+            $("#buy_bld0").disabled = true;
         }
         if (jocoin >= 1000 && ($("#buy_bld1").attr("is_bought") == 0)) {
-            $("#buy_bld1").parent().show();
+            $("#buy_bld1").parent().addClass("available");
         } else {
-            $("#buy_bld1").parent().hide();
+            $("#buy_bld1").parent().removeClass("available");
+            $("#buy_bld1").disabled = true;
         }
         if (jocoin >= 10000 && ($("#buy_bld2").attr("is_bought") == 0)) {
-            $("#buy_bld2").parent().show();
+            $("#buy_bld2").parent().addClass("available");
         } else {
-            $("#buy_bld2").parent().hide();
+            $("#buy_bld2").parent().removeClass("available");
+            $("#buy_bld2").disabled = true;
         }
         if (jocoin >= 100000 && ($("#buy_bld3").attr("is_bought") == 0)) {
-            $("#buy_bld3").parent().show();
+            $("#buy_bld3").parent().addClass("available");
         } else {
-            $("#buy_bld3").parent().hide();
+            $("#buy_bld3").parent().removeClass("available");
+            $("#buy_bld3").disabled = true;
         }
         if (jocoin >= 1000000 && ($("#buy_bld4").attr("is_bought") == 0)) {
-            $("#buy_bld4").parent().show();
+            $("#buy_bld4").parent().addClass("available");
         } else {
-            $("#buy_bld4").parent().hide();
+            $("#buy_bld4").parent().removeClass("available");
+            $("#buy_bld4").disabled = true;
         }
         setTimeout(updateCurrency, 100);
     };
@@ -90,7 +96,7 @@ $(document).ready(function() {
         $.post("/time_update_currency", { csrfmiddlewaretoken: getCookie("csrftoken") }, function (data, status) {
             jocoin = parseFloat(data.jocoin);
             increaseRate = parseFloat(data.increase_rate);
-            $('#count').html(jocoin.toFixed(1));
+            $('#count').html(`Coin: ${jocoin.toFixed(1)}`);
             $("title").html(`Time (${parseInt(jocoin.toFixed(1))})`);
             console.log("synced");
             callback(args);
@@ -101,7 +107,6 @@ $(document).ready(function() {
         $.post("/time_update_upgrade", { csrfmiddlewaretoken: getCookie("csrftoken"), "building_id": args[0].parent().attr("building_id"), "upgrade_id": args[0].attr("upgrade_id") },
             function (data, status) {
                 if (data.status == 1) {
-                    args[0].hide();
                     syncCurrency(empty);
                     reloadPage();
                 } else {
@@ -114,7 +119,6 @@ $(document).ready(function() {
         $.post("/time_update_building", { csrfmiddlewaretoken: getCookie("csrftoken"), "building_id": args[0].attr("building_id") },
             function (data, status) {
                 if (data.status == 1) {
-                    args[0].parent().hide();
                     syncCurrency(empty);
                     reloadPage();
                 } else {
@@ -124,12 +128,18 @@ $(document).ready(function() {
         
     }
 
+    if ($("#begin").length) {
+        $("#counter").hide();
+    }
+
     $("#begin").click(function () {
         $.post("/begin", { csrfmiddlewaretoken: getCookie("csrftoken") }, function (data, status) {
             console.log(status);
         });
         $(this).hide();
-        jocoin += 1
+        $("#counter").show();
+        jocoin += 1;
+        $('#count').html(`Coin: ${jocoin.toFixed(1)}`);
     });
     
     $(".building_button").click(function () {

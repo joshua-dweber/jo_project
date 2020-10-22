@@ -10,16 +10,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<title>Click</title>
+	<title>Mining Simulator</title>
 	{% load static %}
-	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/click.css' %}">
 	<script src="{% static 'js/click.js' %}"></script>
+	<link rel="shortcut icon" type="image/png" href="{% static 'images/JoCoin_img.png' %}" />
 </head>
 
 <body>
 	<a href='/'>Go Back</a>
 	{% csrf_token %}
-	<button id='clicker'>Click Me</button>
+	<button id='clicker'>Mine a Mineral Node</button>
 	<h1 id="count"></h1>
 	<div class="building" style="display: none"><button class="building_button" id="buy_bld0" building_id="0" is_bought=0>Increase Money Per Click I</button></div>
 	<div class="building" style="display: none"><button class="building_button" id="buy_bld1" building_id="1" is_bought=0>Increase Money Per Click II</button></div>

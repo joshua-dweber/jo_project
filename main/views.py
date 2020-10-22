@@ -17,11 +17,12 @@ def index(request):
     context = {
         "is_rich_enough": False,
         "current_user": User.objects.get(id=request.session['user_id']),
+        "jocoin":
     }
     if user.jocoin >= 100000000 and user.usd >= 100000000:
         context['is_rich_enough'] = True
         return render(request, 'index.html', context)
-    return render(request, 'index.html')
+    return render(request, 'index.html', context)
 
 def is_rich_enough(request):
     user = User.objects.get(id=request.session['user_id'])
@@ -130,7 +131,7 @@ def change_money_click(request):
 
 def begin(request):
     user = User.objects.get(id=request.session['user_id'])
-    user.jocoin += 1
+    user.jocoin = 1
     user.save()
     return JsonResponse({})
 

@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>Document</title>
+    <title>The Jo Project</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/JoCoin_img.png' %}" />
     <script>
         $(document).ready(function () {
             // https://stackoverflow.com/questions/22063612/adding-csrftoken-to-ajax-request
@@ -33,11 +37,22 @@
     </script>
 </head>
 <body>
-    <a href="/time">Time</a>
-    <a href="/click">Click</a>
-
-    {% if is_rich_enough == True %}
-    <button id="good_upgrade">Upgrade all money making methods by 10% (costs 100,000,000 of each)</button>
-    {% endif %}
+    <div id='supercont'>
+    <div id='container'>
+        <a id='button1' href="/time">
+            <span class='btext'>Farm Simulator &#8594;</span>
+            <img src="{% static 'images/JoCoin_img.png' %}" alt='JoCoin' id='jocoin'>
+        </a>
+        {% if is_rich_enough == True %}
+        <button id="good_upgrade">Upgrade all money making methods by 10% (costs 100,000,000 of each)</button>
+        {% endif %}
+        <a id='button2' href="/click">
+            <img src="{% static 'images/Dollar_sign.png' %}" alt="dollar sign" id='dollar-sign'>
+            <span class='btext'>&#8592; Click Simulator</span>
+            
+        </a>
+    
+    </div>
+</div>
 </body>
 </html>

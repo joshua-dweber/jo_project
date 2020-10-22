@@ -1,0 +1,169 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+    background-image: url('/static/images/time.png');
+    background-repeat: none;
+    background-size: cover;
+}
+
+#container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#back {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 0;
+}
+
+#change {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+#change input {
+    background-color: darkolivegreen;
+    border: 0;
+    padding: 5px;
+    color: white;
+}
+
+#change input#money-submit:hover {
+    background-color: green;
+    cursor: pointer;
+}
+
+#counter {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+}
+
+#jocoin {
+    height: 100px;
+    display: inline;
+}
+
+#count {
+    user-select: none;
+    display: inline;
+    color: #ff9c45;
+    font-size: 74px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#begin {
+    margin-top: 50px;
+    padding: 40px;
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 0;
+}
+
+#begin:hover {
+    margin-top: 48px;
+    background-color: grey;
+    border: 2px solid black;
+}
+
+#buildings {
+    display: flex;
+    justify-content: space-between;
+    width: 700px;
+}
+
+.available button {
+    background-color: darkslateblue!important;
+    border-color: darkblue!important;
+    cursor: pointer;
+}
+
+.available button:hover {
+    background-color: rgb(37, 146, 135)!important;
+    border-color: darkcyan!important;
+}
+
+#available_buildings {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+#available_buildings span {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 28px;
+}
+
+.building button {
+    padding: 20px;
+    width: 300px;
+    margin-bottom: 20px;
+    background-color: darkgrey;
+    border-color: grey;
+    color: white;
+    border-radius: 5px;
+}
+
+#bought_buildings {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+#bought_buildings span {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 28px;
+}
+
+.blding {
+    width: 300px;
+    padding: 15px;
+    color: white;
+    background-color: darkslategray;
+}
+
+.blding h1 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 27px;
+}
+
+.blding p {
+    color: aliceblue;
+    margin: 10px 0;
+    font-size: 15px;
+}
+
+.blding button {
+    padding: 5px;
+    background-color: darkseagreen;
+    border: 1px solid green;
+    margin-bottom: 5px;
+    border-radius: 2px;
+}
+
+.blding button:hover {
+    background-color: green;
+    border: 1px solid green;
+    cursor: pointer;
+}
