@@ -17,7 +17,6 @@ def index(request):
     context = {
         "is_rich_enough": False,
         "current_user": User.objects.get(id=request.session['user_id']),
-        "jocoin":
     }
     if user.jocoin >= 100000000 and user.usd >= 100000000:
         context['is_rich_enough'] = True
