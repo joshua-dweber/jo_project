@@ -2,14 +2,16 @@ $(document).ready(function() {
     var usd = 0;
     var increaseRate = 1;
     var clicks = 0;
-    var randy = Math.random() * 60;
+    var randy_1 = Math.random() * 593;
+    var randy_2 = Math.random() * 1450;
     
     $("#clicker").click(function () {
         clicks++;
         updateCurrency();
-        randy = Math.random() * 60;
-        document.querySelector('#clicker').style.setProperty('--r-margin', randy+'% '+ randy+'%');
-        console.log(randy);
+        randy_1 = Math.random() * 593;
+        randy_2 = Math.random() * 1450;
+        document.querySelector('#clicker').style.setProperty('--r-margin', 'auto auto '+ randy_1+'px '+ randy_2+'px');
+        console.log(randy_1, randy_2);
     });
 
     updateSyncCurrency();
