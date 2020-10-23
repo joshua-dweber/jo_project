@@ -2,10 +2,14 @@ $(document).ready(function() {
     var usd = 0;
     var increaseRate = 1;
     var clicks = 0;
+    var randy = Math.random() * 60;
     
     $("#clicker").click(function () {
         clicks++;
         updateCurrency();
+        randy = Math.random() * 60;
+        document.querySelector('#clicker').style.setProperty('--r-margin', randy+'% '+ randy+'%');
+        console.log(randy);
     });
 
     updateSyncCurrency();

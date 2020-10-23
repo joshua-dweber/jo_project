@@ -21,8 +21,12 @@ body {
     padding: 1vh 1vh;
 }
 
+:root {
+    --r-margin: auto auto; 
+}
+
 #clicker {
-    margin: auto auto;
+    margin: var(--r-margin);
     padding: 15px 25px;
     font-size: 24px;
     text-align: center;
@@ -40,5 +44,11 @@ body {
     background-color: #e04c11;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
+}
+
+#button_area {
+    height: 710px;
+    width: 100%;
+    display: flex;
 }
 
