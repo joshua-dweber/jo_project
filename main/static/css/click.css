@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+}
+
+#wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column;
+    justify-content: space-around;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1vh 1vh;
+}
+
+#clicker {
+    margin: auto auto;
+    padding: 15px 25px;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background-color: #eb790f;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}
+#clicker:hover {background-color: #c31f1f}
+
+#clicker:active {
+    background-color: #e04c11;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
