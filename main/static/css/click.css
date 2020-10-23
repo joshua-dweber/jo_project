@@ -13,7 +13,6 @@ body {
     flex-wrap: wrap;
     flex-flow: column;
     justify-content: space-around;
-    /* background-image: url('https://www.youtube.com/embed/7e-SexuRyB4'); */
 }
 
 #header {
