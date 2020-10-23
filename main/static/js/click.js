@@ -2,15 +2,15 @@ $(document).ready(function() {
     var usd = 0;
     var increaseRate = 1;
     var clicks = 0;
-    var randy_1 = Math.random() * 593;
-    var randy_2 = Math.random() * 1450;
+    var randy_1 = Math.random() * 80;
+    var randy_2 = Math.random() * 80;
     
     $("#clicker").click(function () {
         clicks++;
         updateCurrency();
-        randy_1 = Math.random() * 593;
-        randy_2 = Math.random() * 1450;
-        document.querySelector('#clicker').style.setProperty('--r-margin', 'auto auto '+ randy_1+'px '+ randy_2+'px');
+        randy_1 = Math.random() * 80;
+        randy_2 = Math.random() * 80;
+        document.querySelector('#clicker').style.setProperty('--r-margin', 'auto auto '+ randy_1+'% '+ randy_2+'%');
         console.log(randy_1, randy_2);
     });
 
