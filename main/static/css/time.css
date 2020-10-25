@@ -167,3 +167,9 @@ body {
     border: 1px solid green;
     cursor: pointer;
 }
+
+#credit {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}

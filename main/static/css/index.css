@@ -68,5 +68,11 @@ body {
     margin-left:-500px;
 }
 
+#credit {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
 
 
